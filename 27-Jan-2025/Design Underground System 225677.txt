@@ -1,0 +1,37 @@
+# Problem: Design Underground System - https://leetcode.com/problems/design-underground-system/
+
+
+class UndergroundSystem {
+  private:
+    map<pair<string, string>, double> means;
+    map<pair<string, string>, int> repetitions;
+    map<int, int> hi;
+    map<int, string> hi2;
+
+  public:
+    UndergroundSystem() {}
+
+    void checkIn(int id, string stationName, int t) {
+        hi[id] = t;
+        hi2[id] = stationName;
+    }
+
+    void checkOut(int id, string stationName, int t) {
+        means[{hi2[id], stationName}] = ((means[{hi2[id], stationName}] *
+                                          repetitions[{hi2[id], stationName}]) +
+                                         t - hi[id]) /
+                                        (++repetitions[{hi2[id], stationName}]);
+    }
+
+    double getAverageTime(string startStation, string endStation) {
+        return means[{startStation, endStation}];
+    }
+};
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem* obj = new UndergroundSystem();
+ * obj->checkIn(id,stationName,t);
+ * obj->checkOut(id,stationName,t);
+ * double param_3 = obj->getAverageTime(startStation,endStation);
+ */
