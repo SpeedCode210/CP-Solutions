@@ -1,0 +1,20 @@
+# Problem: 3Sum - https://leetcode.com/problems/3sum/description/
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        set<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i < nums.size(); i++){
+            for(int j = i+1; j < nums.size(); j++){
+                auto it = lower_bound(nums.begin()+j+1, nums.end(), -nums[i]-nums[j]);
+                if(it != nums.end() && *it == -nums[i]-nums[j]){
+                    res.insert({nums[i],nums[j],-nums[i]-nums[j]});
+                }
+            }
+        }
+        vector<vector<int>> hi;
+        for(auto x : res) hi.push_back(x);
+        return hi;
+    }
+};
