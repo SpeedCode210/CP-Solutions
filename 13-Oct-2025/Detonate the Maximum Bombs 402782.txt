@@ -1,0 +1,41 @@
+# Problem: Detonate the Maximum Bombs - https://leetcode.com/problems/detonate-the-maximum-bombs/description/
+
+class Solution {
+public:
+    int maximumDetonation(vector<vector<int>>& bombs) {
+        vector<vector<int>> graph(bombs.size());
+        for(int i = 0; i < bombs.size(); i++){
+            for(int j = 0; j < bombs.size(); j++){
+                if(i == j) continue;
+                if(((long long)bombs[i][0] - bombs[j][0])*((long long)bombs[i][0] - bombs[j][0]) + ((long long)bombs[i][1] - bombs[j][1])*((long long)bombs[i][1] - bombs[j][1]) <= (long long)bombs[i][2]*(long long)bombs[i][2]){
+                    graph[i].push_back(j);
+                }
+            }
+        }
+
+        int result = 0;
+
+        for(int i = 0; i < bombs.size(); i++){
+            vector<bool> visited(bombs.size());
+            stack<int> dfs;
+            dfs.push(i);
+            visited[i] = true;
+            int count = 0;
+
+            while(dfs.size()){
+                int x = dfs.top();
+                dfs.pop();
+                count++;
+                for(auto &child : graph[x]){
+                    if(visited[child]) continue;
+                    visited[child] = true;
+                    dfs.push(child);
+                }
+            }
+
+            result = max(result, count);
+        }
+
+        return result;
+    }
+};
